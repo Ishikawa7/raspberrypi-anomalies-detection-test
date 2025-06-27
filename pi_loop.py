@@ -58,8 +58,8 @@ def loop():
         buffer.append(value)
         features = to_float_array(extract_features(buffer))
         scaled_features = scaler.transform([features])
-        knn_prediction = knn.predict([scaled_features])
-        clf_prediction = clf.predict([scaled_features])
+        knn_prediction = knn.predict(scaled_features)
+        clf_prediction = clf.predict(scaled_features)
         if knn_prediction[0] == -1 and last_anomaly == -1:
             blue_led.off()
             green_led.off()
