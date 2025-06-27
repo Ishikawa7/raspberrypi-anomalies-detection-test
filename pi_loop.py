@@ -59,12 +59,14 @@ def loop():
         scaled_features = scaler.transform([features])
         knn_prediction = knn.predict(scaled_features)
         clf_prediction = clf.predict(scaled_features)
+        last_anomaly = 0
         print(f"ADC Value: {value}, KNN Prediction: {knn_prediction[0]}, Classifier Prediction: {clf_prediction[0]}")
-        if knn_prediction[0] == -1:
+        if knn_prediction[0] == -1 or last_anomaly == -1:
             print("Anomaly detected!")
             blue_led.off()
             green_led.off()
             red_led.on()
+            last_anomaly = -1
         else:
             red_led.off()
             if clf_prediction[0] == 0:
