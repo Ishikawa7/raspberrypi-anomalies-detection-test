@@ -10,7 +10,6 @@ adc = ADCDevice() # Define an ADCDevice class object
 blue_led = LED(17)
 green_led = LED(27)
 red_led = LED(26)
-buffer = [177] * 10
 
 def setup():
     global adc
@@ -43,15 +42,14 @@ def to_float_array(data):
 def loop():
     i = 0
     dataset = []
-    global buffer
+    buffer = [177] * 10
     while i<100:
-        value = adc.analogRead(7)    # read the ADC value of channel 0
+        value = adc.analogRead(7)    # read the ADC value of channel 7
         buffer.pop(0)
         buffer.append(value)
-        dataset.append(buffer)
         features = to_float_array(extract_features(buffer))
-        #voltage = value / 255.0 * 5.0 #3.3  # calculate the voltage value
-        print ('ADC Value : ', value)#, Voltage : %.2f'%(value,voltage))
+        dataset.append(features)
+        print ('ADC Value : ', value)
         time.sleep(0.1)
         i = i + 1
     df = pd.DataFrame(dataset)
