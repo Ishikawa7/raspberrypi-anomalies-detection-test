@@ -62,17 +62,20 @@ def loop():
         clf_prediction = clf.predict(scaled_features)
         print(f"ADC Value: {value}, KNN Prediction: {knn_prediction[0]}, Classifier Prediction: {clf_prediction[0]}")
         if knn_prediction[0] == -1 and last_anomaly == -1:
+            print("Anomaly detected!")
             blue_led.off()
             green_led.off()
             red_led.on()
         else:
             red_led.off()
             if clf_prediction[0] == 0:
-                blue_led.off()
-                green_led.on()
-            else:
+                print("Off state")
                 blue_led.on()
                 green_led.off()
+            else:
+                print("Normal operation")
+                blue_led.off()
+                green_led.on()
         last_anomaly = knn_prediction[0]
         time.sleep(0.1)
 
