@@ -4,17 +4,7 @@ import sys
 sys.path.append('~/Freenove_Kit/Libs/Python-Libs/ADCDevice-1.0.3')
 from ADCDevice import *
 import numpy as np
-from sklearn.neighbors import LocalOutlierFactor, KNeighborsClassifier
-from sklearn.preprocessing import StandardScaler
-import pickle
-
-# load the models with pickle
-with open('knn_model.pkl', 'rb') as f:
-    knn = pickle.load(f)
-with open('clf_model.pkl', 'rb') as f:
-    clf = pickle.load(f)
-with open('scaler.pkl', 'rb') as f:
-    scaler = pickle.load(f)
+import pandas as pd
 
 adc = ADCDevice() # Define an ADCDevice class object
 blue_led = LED(17)
@@ -50,30 +40,21 @@ def to_float_array(data):
     return np.array(result, dtype=np.float64)
 
 def loop():
+    i = 0
+    dataset = []
     buffer = [177] * 10
-    last_anomaly = 0
-    while True:
+    state = "on"
+    while i<100:
         value = adc.analogRead(7)    # read the ADC value of channel 7
         buffer.pop(0)
         buffer.append(value)
         features = to_float_array(extract_features(buffer))
-        scaled_features = scaler.transform([features])
-        knn_prediction = knn.predict([scaled_features])
-        clf_prediction = clf.predict([scaled_features])
-        if knn_prediction[0] == -1 and last_anomaly == -1:
-            blue_led.off()
-            green_led.off()
-            red_led.on()
-        else:
-            red_led.off()
-            if clf_prediction[0] == 0:
-                blue_led.off()
-                green_led.on()
-            else:
-                blue_led.on()
-                green_led.off()
-        last_anomaly = knn_prediction[0]
+        dataset.append(features)
+        print ('ADC Value : ', value)
         time.sleep(0.1)
+        i = i + 1
+    df = pd.DataFrame(dataset)
+    df.to_csv(state+".csv", index=False)
 
 def destroy():
     adc.close()
