@@ -51,7 +51,6 @@ def to_float_array(data):
 
 def loop():
     buffer = [177] * 10
-    last_anomaly = 0
     while True:
         value = adc.analogRead(7)    # read the ADC value of channel 7
         buffer.pop(0)
@@ -61,7 +60,7 @@ def loop():
         knn_prediction = knn.predict(scaled_features)
         clf_prediction = clf.predict(scaled_features)
         print(f"ADC Value: {value}, KNN Prediction: {knn_prediction[0]}, Classifier Prediction: {clf_prediction[0]}")
-        if knn_prediction[0] == -1 and last_anomaly == -1:
+        if knn_prediction[0] == -1:
             print("Anomaly detected!")
             blue_led.off()
             green_led.off()
