@@ -122,7 +122,10 @@ The system extracts features from a sliding window of 10 sensor readings:
 - 🔴 **Red LED**: Anomaly detected
 - 🟢 **Green LED**: Normal operation (on state)
 - 🔵 **Blue LED**: Off state
-- All LEDs off: System initializing
+
+![blue](blue.png)
+![green](green.png)
+![red](red.png)
 
 ## File Structure
 
