@@ -96,6 +96,13 @@ The system will:
 - Display predictions and LED status
 - Show anomaly alerts when detected
 
+![](on_off.mp4)
+![](test_anomaly_detect.mp4)
+
+Enanchements:
+- reduce lag
+- better anomalies detection
+
 ## How It Works
 
 ### Feature Extraction
